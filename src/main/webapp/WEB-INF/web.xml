@@ -16,6 +16,12 @@
   	<description></description>
   	<servlet-class>rpc.RecommendItem</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>ItemHistory</servlet-name>
+  	<display-name>ItemHistory</display-name>
+  	<description></description>
+  	<servlet-class>rpc.ItemHistory</servlet-class>
+  </servlet>
   <servlet-mapping>
   	<servlet-name>SearchItem</servlet-name>
   	<url-pattern>/search</url-pattern>
@@ -23,5 +29,9 @@
   <servlet-mapping>
   	<servlet-name>RecommendItem</servlet-name>
   	<url-pattern>/recommendation</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>ItemHistory</servlet-name>
+  	<url-pattern>/history</url-pattern>
   </servlet-mapping>
 </web-app>
