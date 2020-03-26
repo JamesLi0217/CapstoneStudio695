@@ -49,8 +49,8 @@
                         showMain : false
                     }
                     this.showLogin = this.showLogin.bind(this)
-                    this.showMain = this.showMain.bind(this)
                     this.showRegister = this.showRegister.bind(this)
+                    this.showMain = this.showMain.bind(this)
                 }
 
                 showMain(){
@@ -67,11 +67,9 @@
                 render(){
 
                     return <div>
+                        {this.state.showLogin ?  <Login showMain = {this.showMain}  showRegister = {this.showRegister}/>: null}
                         {this.state.showRegister ? <Register showLogin = {this.showLogin}/> : null}
                         {this.state.showMain ? <Main/> : null}
-                        {this.state.showLogin ?  <Login showMain = {this.showMain}  showRegister = {this.showRegister}/>: null}
-
-
                         </div>
                 };
             }
@@ -240,7 +238,7 @@
                 }
 
                 componentDidMount(){
-                    fetch('http://localhost:8080/Jobs/search?lat=37.38&lon=-122.08')
+                    fetch('http://localhost:8080/Jobs/search?lat=40.724198&lon=-74.036368')
                         .then(res => res.json())
                         .then((data) => {
                             this.setState({ itemList: data })
@@ -333,7 +331,7 @@
 
                     return <ul id="item-list">
                         {this.props.itemList.map(item => {
-                            return <Item key = {item.item_id} content = {item} changeFavoriteItem = {item.change}/>
+                            return <Item key = {item.item_id} content = {item} func = {this.props.changeFavoriteItem} />
                         })
                     }
                     </ul>
@@ -344,24 +342,40 @@
             class Item extends React.Component {
                 constructor() {
                     super();
+                    // this.props.func.changeFavoriteItem = this.props.func.changeFavoriteItem.bind(this)
+                    // this.state = {iconClass : this.props.content.favorite}
+                    this.changeIcon = this.changeIcon.bind(this)
+                    this.state = {iconClass : "fa fa-thumbs-up"}
                 }
+
+                changeIcon(){
+                    if (this.state.iconClass === "fa fa-thumbs-up"){
+                        this.setState({iconClass : "fa fa-thumbs-down"})
+                    } else {
+                        this.setState({iconClass : "fa fa-thumbs-up"})
+                    }
+                }
+                // gotoApply(){
+                //     window.navigate()
+                // }
 
 
                 render(){
 
-                    
-
                     const item = this.props.content
+                    const func = this.props.func
+
                     return <div class="item">
                         <img alt="item image"
                              src={item.image_url}/>
                         <div>
-                            <a className="item-name" href="#">{item.name}</a>
+                            <a className="item-name" href={item.url} target="_blank">{item.name}</a>
 
                         </div>
-                        <p className="item-address">{item.address}</p>
+                        <p className="item-address" >{item.address}</p>
+
                         <div className="fav-link">
-                            <i className="fa fa-thumbs-up" aria-hidden="true"></i>
+                            <i className={this.state.iconClass} aria-hidden="true" onClick="changeIcon"></i>
                         </div>
                     </div>
 
