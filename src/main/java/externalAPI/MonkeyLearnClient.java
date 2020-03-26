@@ -12,7 +12,8 @@ import com.monkeylearn.MonkeyLearnException;
 import com.monkeylearn.MonkeyLearnResponse;
 
 public class MonkeyLearnClient {
-	private static final String API_KEY = "e7218f8e2099d0f71329196c1b4fb4d5452a0e8d";
+	private static final String API_KEY = "0dccaa856d8df695be7f7989e89310dbc9ed4b40";
+//	private static final String API_KEY = "e7218f8e2099d0f71329196c1b4fb4d5452a0e8d";
 
 	
 
@@ -23,13 +24,13 @@ public class MonkeyLearnClient {
 		// Use the keyword extractor
 		ExtraParam[] extraParams = { new ExtraParam("max_keywords", "3") };
 		MonkeyLearnResponse response;
-		try {
-			response = ml.extractors.extract("ex_YCya9nrn", text, extraParams);
-			JSONArray resultArray = response.arrayResult;
-			return getKeywords(resultArray);
-		} catch (MonkeyLearnException e) {// it’s likely to have an exception
-			e.printStackTrace();
-		}
+//		try {
+//			response = ml.extractors.extract("ex_YCya9nrn", text, extraParams);
+//			JSONArray resultArray = response.arrayResult;
+//			return getKeywords(resultArray);
+//		} catch (MonkeyLearnException e) {// it’s likely to have an exception
+//			e.printStackTrace();
+//		}
 		return new ArrayList<>();
 	}
 

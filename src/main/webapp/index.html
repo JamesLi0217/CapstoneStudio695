@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Job Recommendation">
+    <meta name="author" content="SSW695">
+    <title>Job Recommendation</title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="styles/style.css">
+<!--    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">-->
+
+    <script src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.21.1/babel.min.js"></script>
+    <script src="https://kit.fontawesome.com/587a770a22.js" crossorigin="anonymous"></script>
+
+<!--    <script type = "module" src="md5.js"></script>-->
+
+</head>
+<body>
+<header class="top-header">
+    <nav class="top-nav">
+        <a href="#">Home</a>
+        <a href="#">Contact</a>
+        <a href="#">About</a>
+    </nav>
+</header>
+
+<div class="container">
+    <webTitle>
+        <p>
+            <span>Job</span>
+            <br /> Recommendation
+        </p>
+    </webTitle>
+
+    <div id="root"></div>
+    <section class="main-section">
+
+        <script type="text/babel">
+
+            class App extends React.Component {
+                constructor() {
+                    super();
+                    this.state = {
+                        showLogin : true,
+                        showRegister : false,
+                        showMain : false
+                    }
+                    this.showLogin = this.showLogin.bind(this)
+                    this.showMain = this.showMain.bind(this)
+                    this.showRegister = this.showRegister.bind(this)
+                }
+
+                showMain(){
+                    this.setState({showLogin : false, showRegister : false, showMain : true})
+                }
+
+                showRegister(){
+                    this.setState({showRegister : true, showLogin : false, showMain : false})
+                }
+
+                showLogin(){
+                    this.setState({showLogin : true, showRegister : false, showMain : false})
+                }
+                render(){
+
+                    return <div>
+                        {this.state.showRegister ? <Register showLogin = {this.showLogin}/> : null}
+                        {this.state.showMain ? <Main/> : null}
+                        {this.state.showLogin ?  <Login showMain = {this.showMain}  showRegister = {this.showRegister}/>: null}
+
+
+                        </div>
+                };
+            }
+
+            class Login extends React.Component {
+                constructor() {
+                    super();
+                    this.state = {username : " ", password: " ", valid : false}
+                    // this.userName = React.createRef()
+                    // this.passWord = React.createRef()
+                    this.changeName = this.changeName.bind(this)
+                    this.changePassword = this.changePassword.bind(this)
+                    this.login = this.login.bind(this)
+                }
+
+                login() {
+                    // const password = md5(this.state.username + md5(this.state.password));
+
+                    // The request parameters
+                    const url = 'http://localhost:8080/Jobs/login'
+                    const req = JSON.stringify({
+                        // user_id: "James123",
+                        // password: "fcfc6c840c4a2eaef0e385f5282e349e"
+                        user_id: this.state.username,
+                        password: this.state.password
+                    })
+
+                    fetch(url, {
+                        method: "POST",
+                        headers: {'Content-Type': 'application/json'},
+                        body: req
+                    }).then(response => response.json())
+                        .then(data => {
+                            // console.log(data)
+                            if (data.status === 'OK') {
+                                this.setState({valid: true})
+                                console.log("Welcome");
+                            } else {
+                                console.log("Wrong Answer");
+                            }
+                        }).catch(error => console.error(error));
+                }
+
+                changeName(event){
+                    this.setState({username:event.target.value, password:this.state.password})
+                }
+                changePassword(event){
+                    this.setState({password:event.target.value,username:this.state.username})
+                }
+
+                render(){
+
+
+                    return <div id="login-form">
+                        <span className="input-icon"><i className="fa fa-envelope-o fa-fw"> </i></span>
+                        <input id="username" name="username" type="text" placeholder="User Name" onChange={this.changeName}/>
+
+                        <span className="input-icon"><i className="fa fa-key fa-fw"></i></span>
+                        <input id="password" name="password" type="password" placeholder="Password" onChange={this.changePassword}/>
+
+
+                        <button id="register-form-btn" onClick={ () => {
+                            this.props.showRegister()
+                            // this.setState({showRegister : !this.state.showRegister})
+                        }}>New User? Register</button>
+                        <button id="login-btn" onClick={() => {
+                            this.login();
+                            console.log(this.state.valid)
+                            // if (this.state.valid){
+                            //     this.props.showMain()
+                            // }
+                        }}>Login</button>
+                        {this.state.valid ? this.props.showMain() : null}
+                        <p id="login-error"></p>
+                    </div>
+                };
+            }
+
+            class Register extends React.Component {
+                constructor() {
+                    super();
+                    this.state = {username : " ", password : " ", firstName : " ", lastName : " "}
+                    this.changeName = this.changeName.bind(this)
+                    this.changePassword = this.changePassword.bind(this)
+                    this.changeFirst = this.changeFirst.bind(this)
+                    this.changeLast = this.changeLast.bind(this)
+                    this.register = this.register.bind(this)
+                }
+
+                register(){
+
+                    const url = 'http://localhost:8080/Jobs/register'
+                    const req = JSON.stringify({
+                        // user_id: "James123",
+                        // password: "fcfc6c840c4a2eaef0e385f5282e349e"
+                        user_id : this.state.username,
+                        password : this.state.password,
+                        first_name: this.state.firstName,
+                        last_name: this.state.lastName,
+                    })
+
+                    fetch(url, {
+                        method: "POST",
+                        headers: {'Content-Type': 'application/json'},
+                        body: req
+                    }).then(response => response.json())
+                        .then(data => {
+                            console.log(data)
+                        }).catch(error => console.error(error));
+                }
+
+                changeName(event){
+                    this.setState({
+                        username:event.target.value
+                    })
+                }
+
+                changePassword(event){
+                    this.setState({
+                        password:event.target.value
+                    })
+                }
+
+                changeFirst(event){
+                    this.setState({
+                        firstName:event.target.value
+                    })
+                }
+
+                changeLast(event){
+                    this.setState({
+                        lastName:event.target.value
+                    })
+                }
+
+
+                render(){
+
+                    return <div id="register-form">
+                        <label htmlFor="username">Required*</label>
+                        <input id="register-username" name="username" type="text" placeholder="UserName" onChange={this.changeName}/>
+                        <label htmlFor="password">Required *</label>
+                        <input id="register-password" name="password" type="password" placeholder="Password" onChange={this.changePassword}/>
+                        <label htmlFor="first-name">Required *</label>
+                        <input id="register-first-name" name="first-name" type="text" placeholder="First Name" onChange={this.changeFirst}/>
+                        <label htmlFor="last-name">Required *</label>
+                        <input id="register-last-name" name="last-name" type="text" placeholder="Last Name" onChange={this.changeLast}/>
+                        <button id="login-form-btn" onClick={ ()=>{
+                            this.props.showLogin()}
+                        }>Back to Login</button>
+                        <button id="register-btn" onClick={ ()=>{
+                            this.register()
+                        }}>Register</button>
+                        <p id="register-result"></p>
+                    </div>
+
+                };
+            }
+
+
+            class Main extends React.Component {
+                constructor() {
+                    super();
+                    this.state = {itemList : []}
+                    this.changeFavoriteItem = this.changeFavoriteItem.bind(this)
+                }
+
+                componentDidMount(){
+                    fetch('http://localhost:8080/Jobs/search?lat=37.38&lon=-122.08')
+                        .then(res => res.json())
+                        .then((data) => {
+                            this.setState({ itemList: data })
+                        })
+                        .catch(console.log)
+                }
+
+
+
+                changeFavoriteItem(userId, item) {
+
+                    const url = 'http://localhost:8080/Jobs/history'
+                    const req = JSON.stringify({
+                        user_id : userId,
+                        favorite : item
+                    })
+
+                    // check whether this item has been visited or not
+                    // const favIcon = document.querySelector('#fav-icon-' + item.item_id)
+                    const favorite = !(item.favorite === 'true')
+
+                    const postOrdelete = favorite ? 'POST' : 'DELETE'
+
+                    fetch(url, {
+                        method: postOrdelete,
+                        headers: {'Content-Type': 'application/json'},
+                        body: req
+                    }).then(response => response.json())
+                        .then(data => {
+                            console.log(data)
+                        }).catch(error => console.error(error));
+
+                    // ajax(method, url, req,
+                    //     // successful callback
+                    //     function(res) {
+                    //         var result = JSON.parse(res);
+                    //         if (result.status === 'OK' || result.result === 'SUCCESS') {
+                    //             li.dataset.favorite = favorite;
+                    //             favIcon.className = favorite ? 'fa fa-heart' : 'fa fa-heart-o';
+                    //         }
+                    //     });
+                }
+
+                render(){
+                    return <div>
+                        <Navi/>
+                        <ItemList itemList = {this.state.itemList} changeFavoriteItem = {this.changeFavoriteItem}/>
+                    </div>
+                };
+
+            }
+
+            class Navi extends React.Component {
+                constructor() {
+                    super();
+                }
+                render(){
+                    // return <aside id="item-nav">
+                    // <div>
+                    //     <a href = "#">Nearby</a>
+                    //     <a href = "#">Favorite</a>
+                    //     <a href = "#">Recommendation</a>
+                    // </div>
+                    //
+                    //     </aside >
+                    return <aside id="item-nav">
+                        <div className="nav-icon">
+                            <i className="fa fa-sitemap fa-2x"></i>
+                        </div>
+                        <nav className="main-nav">
+                            <a href="#" id="nearby-btn" className="main-nav-btn active">
+                                <i className="fa fa-map-marker"></i> Nearby
+                            </a>
+                            <a href="#" id="fav-btn" className="main-nav-btn">
+                                <i className="fa fa-heart"></i> My Favorites
+                            </a>
+                            <a href="#" id="recommend-btn" className="main-nav-btn">
+                                <i className="fa fa-thumbs-up"></i> Recommendation
+                            </a>
+                        </nav>
+                    </aside>
+                };
+            }
+
+            class ItemList extends React.Component {
+                constructor() {
+                    super();
+                }
+                render(){
+
+                    return <ul id="item-list">
+                        {this.props.itemList.map(item => {
+                            return <Item key = {item.item_id} content = {item} changeFavoriteItem = {item.change}/>
+                        })
+                    }
+                    </ul>
+
+                };
+            }
+
+            class Item extends React.Component {
+                constructor() {
+                    super();
+                }
+
+
+                render(){
+
+                    
+
+                    const item = this.props.content
+                    return <div class="item">
+                        <img alt="item image"
+                             src={item.image_url}/>
+                        <div>
+                            <a className="item-name" href="#">{item.name}</a>
+
+                        </div>
+                        <p className="item-address">{item.address}</p>
+                        <div className="fav-link">
+                            <i className="fa fa-thumbs-up" aria-hidden="true"></i>
+                        </div>
+                    </div>
+
+                };
+            }
+
+            ReactDOM.render(
+                <App/>,
+                document.getElementById('root')
+            );
+        </script>
+    </section>
+</div>
+
+<footer>
+    <ul>
+        <li>
+            <p><i class="fa fa-flag fa-2x pull-left"></i></p>
+            <p class="title">What We Do</p>
+            <p>"Help you find your favorite job around!"</p>
+        </li>
+        <li>
+            <p><i class="fa fa-map-o fa-2x"></i></p>
+            <p class="item-address">1 Castle Point Terrace<br/>Hoboken <br/> NJ 07030</p>
+        </li>
+    </ul>
+
+<!--    <p class="title">Who We Are</p>-->
+<!--    <p>"Jobs from SSW695"</p>-->
+</footer>
+</body>
+</html>
