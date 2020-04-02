@@ -37,13 +37,14 @@ public class SearchItem extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
-		HttpSession session = request.getSession(false);
-		if (session == null) {
-			response.setStatus(403);
-			return;
-		}
+//		HttpSession session = request.getSession(false);
+//		if (session == null) {
+//			response.setStatus(403);
+//			return;
+//		}
 		
 		String userId = request.getParameter("user_id");
+		System.out.print(1);
 		double lat = Double.parseDouble(request.getParameter("lat"));
 		double lon = Double.parseDouble(request.getParameter("lon"));
 

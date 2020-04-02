@@ -8,7 +8,6 @@
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="styles/style.css">
-<!--    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">-->
 
     <script src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
@@ -22,9 +21,12 @@
 <header class="top-header">
     <nav class="top-nav">
         <a href="#">Home</a>
-        <a href="#">Contact</a>
-        <a href="#">About</a>
+        <a href="#contacts">Contact</a>
+<!--        <a href="#">About</a>-->
     </nav>
+    <span id="welcome-msg"></span>
+    <a href="logout">Logout</a>
+    <i id="avatar" class="avatar fa fa-user fa-2x"></i>
 </header>
 
 <div class="container">
@@ -46,11 +48,15 @@
                     this.state = {
                         showLogin : true,
                         showRegister : false,
-                        showMain : false
+                        showMain : false,
+                        username : " "
                     }
+
+
                     this.showLogin = this.showLogin.bind(this)
                     this.showRegister = this.showRegister.bind(this)
                     this.showMain = this.showMain.bind(this)
+                    this.validUsername = this.validUsername.bind(this)
                 }
 
                 showMain(){
@@ -64,12 +70,15 @@
                 showLogin(){
                     this.setState({showLogin : true, showRegister : false, showMain : false})
                 }
-                render(){
 
+                validUsername(username){
+                    this.setState({username : username})
+                }
+                render(){
                     return <div>
-                        {this.state.showLogin ?  <Login showMain = {this.showMain}  showRegister = {this.showRegister}/>: null}
+                        {this.state.showLogin ?  <Login username = {this.validUsername} showMain = {this.showMain}  showRegister = {this.showRegister}/>: null}
                         {this.state.showRegister ? <Register showLogin = {this.showLogin}/> : null}
-                        {this.state.showMain ? <Main/> : null}
+                        {this.state.showMain ? <Main username = {this.state.username}/> : null}
                         </div>
                 };
             }
@@ -83,6 +92,7 @@
                     this.changeName = this.changeName.bind(this)
                     this.changePassword = this.changePassword.bind(this)
                     this.login = this.login.bind(this)
+                    this.showMessage = this.showMessage.bind(this)
                 }
 
                 login() {
@@ -103,14 +113,16 @@
                         body: req
                     }).then(response => response.json())
                         .then(data => {
-                            // console.log(data)
                             if (data.status === 'OK') {
                                 this.setState({valid: true})
-                                console.log("Welcome");
                             } else {
-                                console.log("Wrong Answer");
+                                // console.log("Wrong Answer");
+                                alert("Double check your info")
                             }
+
                         }).catch(error => console.error(error));
+
+
                 }
 
                 changeName(event){
@@ -120,15 +132,19 @@
                     this.setState({password:event.target.value,username:this.state.username})
                 }
 
+                showMessage(){
+                    document.getElementById("welcome-msg").innerHTML = "Welcome, " + this.state.username
+                }
+
                 render(){
 
 
                     return <div id="login-form">
-                        <span className="input-icon"><i className="fa fa-envelope-o fa-fw"> </i></span>
-                        <input id="username" name="username" type="text" placeholder="User Name" onChange={this.changeName}/>
+                        <i className="fa fa-envelope-o fa-fw icon"></i>
+                        <input class = "input" type="text" placeholder="User Name" onChange={this.changeName}/>
 
-                        <span className="input-icon"><i className="fa fa-key fa-fw"></i></span>
-                        <input id="password" name="password" type="password" placeholder="Password" onChange={this.changePassword}/>
+                        <i className="fa fa-key fa-fw icon"></i>
+                        <input class = "input" type="password" placeholder="Password" onChange={this.changePassword}/>
 
 
                         <button id="register-form-btn" onClick={ () => {
@@ -137,12 +153,13 @@
                         }}>New User? Register</button>
                         <button id="login-btn" onClick={() => {
                             this.login();
-                            console.log(this.state.valid)
                             // if (this.state.valid){
                             //     this.props.showMain()
                             // }
                         }}>Login</button>
+                        {this.state.valid ? this.props.username(this.state.username) : null}
                         {this.state.valid ? this.props.showMain() : null}
+                        {this.state.valid ? this.showMessage() : null}
                         <p id="login-error"></p>
                     </div>
                 };
@@ -163,8 +180,6 @@
 
                     const url = 'http://localhost:8080/Jobs/register'
                     const req = JSON.stringify({
-                        // user_id: "James123",
-                        // password: "fcfc6c840c4a2eaef0e385f5282e349e"
                         user_id : this.state.username,
                         password : this.state.password,
                         first_name: this.state.firstName,
@@ -178,6 +193,10 @@
                     }).then(response => response.json())
                         .then(data => {
                             console.log(data)
+                            if (data.status === "OK"){
+                                alert("Successfully Register! Enjoy")
+                            }
+                            alert("Existed User")
                         }).catch(error => console.error(error));
                 }
 
@@ -209,13 +228,13 @@
                 render(){
 
                     return <div id="register-form">
-                        <label htmlFor="username">Required*</label>
+                        <label htmlFor="username" class = "label">Required*</label>
                         <input id="register-username" name="username" type="text" placeholder="UserName" onChange={this.changeName}/>
-                        <label htmlFor="password">Required *</label>
+                        <label htmlFor="password" class = "label">Required *</label>
                         <input id="register-password" name="password" type="password" placeholder="Password" onChange={this.changePassword}/>
-                        <label htmlFor="first-name">Required *</label>
+                        <label htmlFor="first-name" class = "label">Required *</label>
                         <input id="register-first-name" name="first-name" type="text" placeholder="First Name" onChange={this.changeFirst}/>
-                        <label htmlFor="last-name">Required *</label>
+                        <label htmlFor="last-name" class = "label">Required *</label>
                         <input id="register-last-name" name="last-name" type="text" placeholder="Last Name" onChange={this.changeLast}/>
                         <button id="login-form-btn" onClick={ ()=>{
                             this.props.showLogin()}
@@ -233,32 +252,106 @@
             class Main extends React.Component {
                 constructor() {
                     super();
-                    this.state = {itemList : []}
+                    this.state = {itemList : [], searched : false, faved: false}
                     this.changeFavoriteItem = this.changeFavoriteItem.bind(this)
+                    this.getFavorite = this.getFavorite.bind(this)
+                    this.search = this.search.bind(this)
+                    this.searchFavo = this.searchFavo.bind(this)
+                    this.recommendation = this.recommendation.bind(this)
+                    this.onPositionUpdated = this.onPositionUpdated.bind(this)
+                    this.onLoadPositionFailed = this.onLoadPositionFailed.bind(this)
+                    this.searchHelper = this.searchHelper.bind(this)
                 }
 
                 componentDidMount(){
-                    fetch('http://localhost:8080/Jobs/search?lat=40.724198&lon=-74.036368')
+                    this.search()
+                    // this.getFavorite()
+                }
+
+                // position(){
+                //      navigator.geolocation.getCurrentPosition(
+                //         position => this.setState({
+                //             latitude: position.coords.latitude,
+                //             longitude: position.coords.longitude
+                //         }),
+                //         err => console.log(err)
+                //     );
+                //     console.log(this.state.latitude)
+                // }
+                search(){
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(
+                            this.onPositionUpdated,
+                            this.onLoadPositionFailed, {
+                                maximumAge : 60000
+                            }
+                        )
+                        // console.log(1)
+                        } else {
+                        this.onLoadPositionFailed()
+                    }
+                }
+                onPositionUpdated(position){
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    this.searchHelper(lat, lon)
+                }
+
+                onLoadPositionFailed(){
+                    const url = 'http://ipinfo.io/json'
+                    let lat = "40.76116943359375";
+                    let lon = "-73.95081329345703";
+
+                    fetch(url)
                         .then(res => res.json())
                         .then((data) => {
-                            this.setState({ itemList: data })
+                            if ('loc' in data) {
+                                const loc = data.loc.split(',')
+                                lat = loc[0];
+                                lon = loc[1];
+                            } else {
+                                console.warn('Getting location by IP failed.');
+                            }
+                        })
+                        .catch(console.log)
+                    this.searchHelper(lat, lon)
+                }
+
+                searchHelper(lat, lon){
+                    fetch('http://localhost:8080/Jobs/search?lat='+lat + "&lon=" + lon )
+                        .then(res => res.json())
+                        .then((data) => {
+                            //****** callback function help getFavorite can get new state
+                            this.setState({ itemList: data }, () => this.getFavorite())
                         })
                         .catch(console.log)
                 }
 
+                getFavorite(){
+                    const url = 'http://localhost:8080/Jobs/history?user_id=' + this.props.username
+                    fetch(url, {
+                        method: "GET"
+                    }).then(response => response.json())
+                        .then(data => {
+                            console.log(data)
 
+                            for(const item in data){
+                                this.setState({itemList : this.state.itemList.map(job => job.item_id === data[item].item_id ? {...job, favorite : true} : job)})
+                            }
+                        }).catch(error => console.error(error));
+                }
 
-                changeFavoriteItem(userId, item) {
+                changeFavoriteItem(item) {
 
                     const url = 'http://localhost:8080/Jobs/history'
                     const req = JSON.stringify({
-                        user_id : userId,
+                        user_id : this.props.username,
                         favorite : item
                     })
 
                     // check whether this item has been visited or not
                     // const favIcon = document.querySelector('#fav-icon-' + item.item_id)
-                    const favorite = !(item.favorite === 'true')
+                    const favorite = !(item.favorite === true)
 
                     const postOrdelete = favorite ? 'POST' : 'DELETE'
 
@@ -269,59 +362,47 @@
                     }).then(response => response.json())
                         .then(data => {
                             console.log(data)
+                            this.setState({itemList : this.state.itemList.map(
+                                job => job.item_id === item.item_id ? {...job, favorite : !job.favorite} : job)})
+                            // consloe.log(job)
                         }).catch(error => console.error(error));
-
-                    // ajax(method, url, req,
-                    //     // successful callback
-                    //     function(res) {
-                    //         var result = JSON.parse(res);
-                    //         if (result.status === 'OK' || result.result === 'SUCCESS') {
-                    //             li.dataset.favorite = favorite;
-                    //             favIcon.className = favorite ? 'fa fa-heart' : 'fa fa-heart-o';
-                    //         }
-                    //     });
                 }
+
+                searchFavo(){
+                    // this.setState({itemList : this.state.itemList.filter(job => job.favorite === true)})
+                    const url = "http://localhost:8080/Jobs/history?user_id=" + this.props.username
+                    fetch(url)
+                        .then(res => res.json())
+                        .then((data) => {
+                            this.setState({ itemList: data })
+                        })
+                        .catch(console.log)
+
+                }
+
+                recommendation(){
+                    const url = "http://localhost:8080/Jobs/recommendation?user_id="+ this.props.username +"&lat=40.724198&lon=-74.036368"
+                    fetch(url)
+                        .then(res => res.json())
+                        .then((data) => {
+                            this.setState({ itemList: data })
+                        })
+                        .catch(console.log)
+
+                }
+
 
                 render(){
                     return <div>
-                        <Navi/>
+                        <Navi filterFavo = {this.searchFavo} backToNearby = {this.search} recommend = {this.recommendation}/>
+
                         <ItemList itemList = {this.state.itemList} changeFavoriteItem = {this.changeFavoriteItem}/>
                     </div>
                 };
 
             }
 
-            class Navi extends React.Component {
-                constructor() {
-                    super();
-                }
-                render(){
-                    // return <aside id="item-nav">
-                    // <div>
-                    //     <a href = "#">Nearby</a>
-                    //     <a href = "#">Favorite</a>
-                    //     <a href = "#">Recommendation</a>
-                    // </div>
-                    //
-                    //     </aside >
-                    return <aside id="item-nav">
-                        <div className="nav-icon">
-                            <i className="fa fa-sitemap fa-2x"></i>
-                        </div>
-                        <nav className="main-nav">
-                            <a href="#" id="nearby-btn" className="main-nav-btn active">
-                                <i className="fa fa-map-marker"></i> Nearby
-                            </a>
-                            <a href="#" id="fav-btn" className="main-nav-btn">
-                                <i className="fa fa-heart"></i> My Favorites
-                            </a>
-                            <a href="#" id="recommend-btn" className="main-nav-btn">
-                                <i className="fa fa-thumbs-up"></i> Recommendation
-                            </a>
-                        </nav>
-                    </aside>
-                };
-            }
+
 
             class ItemList extends React.Component {
                 constructor() {
@@ -330,6 +411,7 @@
                 render(){
 
                     return <ul id="item-list">
+
                         {this.props.itemList.map(item => {
                             return <Item key = {item.item_id} content = {item} func = {this.props.changeFavoriteItem} />
                         })
@@ -342,43 +424,63 @@
             class Item extends React.Component {
                 constructor() {
                     super();
-                    // this.props.func.changeFavoriteItem = this.props.func.changeFavoriteItem.bind(this)
-                    // this.state = {iconClass : this.props.content.favorite}
-                    this.changeIcon = this.changeIcon.bind(this)
-                    this.state = {iconClass : "fa fa-thumbs-up"}
                 }
-
-                changeIcon(){
-                    if (this.state.iconClass === "fa fa-thumbs-up"){
-                        this.setState({iconClass : "fa fa-thumbs-down"})
-                    } else {
-                        this.setState({iconClass : "fa fa-thumbs-up"})
-                    }
-                }
-                // gotoApply(){
-                //     window.navigate()
-                // }
-
 
                 render(){
 
                     const item = this.props.content
-                    const func = this.props.func
 
                     return <div class="item">
                         <img alt="item image"
                              src={item.image_url}/>
                         <div>
                             <a className="item-name" href={item.url} target="_blank">{item.name}</a>
+                            /*<p>{item.keywords}</p>*/
 
                         </div>
                         <p className="item-address" >{item.address}</p>
 
                         <div className="fav-link">
-                            <i className={this.state.iconClass} aria-hidden="true" onClick="changeIcon"></i>
+                            <i className={item.favorite ?  "fas fa-bookmark" :  "far fa-bookmark"} aria-hidden="true" onClick={() => {this.props.func(item)}}></i>
                         </div>
                     </div>
 
+                };
+            }
+
+            class Navi extends React.Component {
+                constructor() {
+                    super();
+                    this.changeActive = this.changeActive.bind(this)
+                }
+                changeActive(id){
+                    const btnClass = document.getElementsByClassName("main-nav-btn")
+                    console.log(btnClass)
+                    for (const i in btnClass){
+                        if (btnClass[i].id === id){
+                            btnClass[i].className = "main-nav-btn active"
+                        } else {
+                            btnClass[i].className = "main-nav-btn"
+                        }
+                    }
+                }
+                render(){
+                    return <aside id="item-nav">
+                        <div className="nav-icon">
+                            <i className="fa fa-sitemap fa-2x"></i>
+                        </div>
+                        <nav className="main-nav">
+                            <a href="#" id="nearby-btn" className="main-nav-btn active" onClick={(event) => {this.props.backToNearby(); this.changeActive("nearby-btn")}}>
+                                <i className="fa fa-map-marker"></i> Nearby
+                            </a>
+                            <a href="#" id="fav-btn" className="main-nav-btn" onClick={(event) => {this.props.filterFavo(); this.changeActive("fav-btn")}}>
+                                <i className="fas fa-bookmark"></i> My Favorites
+                            </a>
+                            <a href="#" id="recommend-btn" className="main-nav-btn" onClick={(event) =>{this.props.recommend(); this.changeActive("recommend-btn")}}>
+                                <i className="fa fa-thumbs-up"></i> Recommendation
+                            </a>
+                        </nav>
+                    </aside>
                 };
             }
 
@@ -390,16 +492,18 @@
     </section>
 </div>
 
-<footer>
+<footer id="contacts">
     <ul>
         <li>
-            <p><i class="fa fa-flag fa-2x pull-left"></i></p>
+            <p><i class="fa fa-flag fa-2x "></i></p>
             <p class="title">What We Do</p>
             <p>"Help you find your favorite job around!"</p>
         </li>
         <li>
             <p><i class="fa fa-map-o fa-2x"></i></p>
-            <p class="item-address">1 Castle Point Terrace<br/>Hoboken <br/> NJ 07030</p>
+            <br/>
+            <p >1 Castle Point Terrace</p>
+            <p>Hoboken <br/> NJ 07030</p>
         </li>
     </ul>
 

@@ -16,6 +16,9 @@ ul {
     list-style: none;
 }
 
+a {
+    color: #F9F9F9;
+}
 /**
  * top header
  */
@@ -110,6 +113,16 @@ ul {
 /*#login-form label {*/
 /*    display: block;*/
 /*}*/
+.input {
+    /*padding: 100px;*/
+    text-indent: 30px;
+}
+
+.icon{
+    position: absolute;
+    padding: 10px;
+
+}
 
 #login-form input {
     border: none;
@@ -145,6 +158,10 @@ ul {
 /**
  * register form
  */
+
+.label {
+    color : #F9F9F9;
+}
 #register-form {
     color: #624630;
     margin: 0px auto;
