@@ -24,13 +24,13 @@ public class MonkeyLearnClient {
 		// Use the keyword extractor
 		ExtraParam[] extraParams = { new ExtraParam("max_keywords", "3") };
 		MonkeyLearnResponse response;
-//		try {
-//			response = ml.extractors.extract("ex_YCya9nrn", text, extraParams);
-//			JSONArray resultArray = response.arrayResult;
-//			return getKeywords(resultArray);
-//		} catch (MonkeyLearnException e) {// it’s likely to have an exception
-//			e.printStackTrace();
-//		}
+		try {
+			response = ml.extractors.extract("ex_YCya9nrn", text, extraParams);
+			JSONArray resultArray = response.arrayResult;
+			return getKeywords(resultArray);
+		} catch (MonkeyLearnException e) {// it’s likely to have an exception
+			e.printStackTrace();
+		}
 		return new ArrayList<>();
 	}
 

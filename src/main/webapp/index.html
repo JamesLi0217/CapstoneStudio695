@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="description" content="Job Recommendation">
@@ -49,6 +49,7 @@
                         showLogin : true,
                         showRegister : false,
                         showMain : false,
+                        // showQuestionnaire : false,
                         username : " "
                     }
 
@@ -57,7 +58,11 @@
                     this.showRegister = this.showRegister.bind(this)
                     this.showMain = this.showMain.bind(this)
                     this.validUsername = this.validUsername.bind(this)
+                    // this.showQuestionnare = this.showQuestionnare.bind(this)
                 }
+                // showQuestionnaire(){
+                //     this.setState({showLogin : false, showRegister : false, showMain : false})
+                // }
 
                 showMain(){
                     this.setState({showLogin : false, showRegister : false, showMain : true})
@@ -81,6 +86,24 @@
                         {this.state.showMain ? <Main username = {this.state.username}/> : null}
                         </div>
                 };
+            }
+            class Questionnaire extends React.Component {
+                constructor() {
+                    super();
+                    this.state = {keywordsList : []}
+                }
+
+                changeFavoriteType(event){
+                    // this.setState({})
+                }
+                render(){
+
+                    return <div id="questionnaire">
+                        <i className="fas fa-search"></i>
+                        <input className="input" type="text" placeholder="Favorite Job Type" onChange={this.changeFavoriteType}/>
+
+                    </div>
+                }
             }
 
             class Login extends React.Component {
