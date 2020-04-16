@@ -214,25 +214,46 @@ public class MySQLConnection {
 		return false;
 	}
 
-	public boolean addUser(String userId, String password, String firstname, String lastname) {
+	public boolean addUser(String userId, String password, String firstname, String lastname, String interest) {
 		if (conn == null) {
 			System.err.println("DB connection failed");
 			return false;
 		}
 
-		String sql = "INSERT IGNORE INTO users VALUES (?, ?, ?, ?)";
+		String sql = "INSERT IGNORE INTO users VALUES (?, ?, ?, ?,?)";
 		try {
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setString(1, userId);
 			statement.setString(2, password);
 			statement.setString(3, firstname);
 			statement.setString(4, lastname);
+			statement.setString(5, interest);
 
 			return statement.executeUpdate() == 1;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	public String getInteret(String userId) {
+		if (conn == null) {
+			System.err.println("DB connection failed");
+			return "";
+		}
+		String interest = "";
+		String sql = "SELECT interest FROM users WHERE user_id = ? ";
+		try {
+			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setString(1, userId);
+			ResultSet rs = statement.executeQuery();
+			if (rs.next()) {
+				interest = rs.getString("interest");
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return interest;
 	}
 
 

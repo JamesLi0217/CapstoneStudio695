@@ -87,24 +87,7 @@
                         </div>
                 };
             }
-            class Questionnaire extends React.Component {
-                constructor() {
-                    super();
-                    this.state = {keywordsList : []}
-                }
 
-                changeFavoriteType(event){
-                    // this.setState({})
-                }
-                render(){
-
-                    return <div id="questionnaire">
-                        <i className="fas fa-search"></i>
-                        <input className="input" type="text" placeholder="Favorite Job Type" onChange={this.changeFavoriteType}/>
-
-                    </div>
-                }
-            }
 
             class Login extends React.Component {
                 constructor() {
@@ -189,9 +172,11 @@
             }
 
             class Register extends React.Component {
+
                 constructor() {
                     super();
-                    this.state = {username : " ", password : " ", firstName : " ", lastName : " "}
+                    this.state = {username : " ", password : " ", firstName : " ", lastName : " ", interest:"",}
+                    this.plainOptions = ['Front End', 'Back End', 'Full stack', 'Android', 'IOS'];
                     this.changeName = this.changeName.bind(this)
                     this.changePassword = this.changePassword.bind(this)
                     this.changeFirst = this.changeFirst.bind(this)
@@ -207,6 +192,7 @@
                         password : this.state.password,
                         first_name: this.state.firstName,
                         last_name: this.state.lastName,
+                        interest: this.state.interest,
                     })
 
                     fetch(url, {
@@ -219,7 +205,6 @@
                             if (data.status === "OK"){
                                 alert("Successfully Register! Enjoy")
                             }
-                            alert("Existed User")
                         }).catch(error => console.error(error));
                 }
 
@@ -247,6 +232,10 @@
                     })
                 }
 
+                onCheckChange(num){
+                    this.state.interest == "" ? this.state.interest = this.plainOptions[num] : ""
+                }
+
 
                 render(){
 
@@ -259,6 +248,21 @@
                         <input id="register-first-name" name="first-name" type="text" placeholder="First Name" onChange={this.changeFirst}/>
                         <label htmlFor="last-name" class = "label">Required *</label>
                         <input id="register-last-name" name="last-name" type="text" placeholder="Last Name" onChange={this.changeLast}/>
+                        <label>Interests</label>
+                        <div id="interests">
+                            <label className="checkbox-inline"><input type="radio" name="select"  onChange={this.onCheckChange(0)}/>
+                            {this.plainOptions[0]}</label>
+                            <label className="checkbox-inline"><input type="radio" name="select" onChange={this.onCheckChange(1)}/>
+                            {this.plainOptions[1]}</label>
+                            <label className="checkbox-inline"><input type="radio" name="select" onChange={this.onCheckChange(2)}/>
+                            {this.plainOptions[2]}</label>
+                            <br/>
+                            <label className="checkbox-inline"><input type="radio" name="select" onChange={this.onCheckChange(3)}/>
+                            {this.plainOptions[3]}</label>
+                            <label className="checkbox-inline"><input type="radio" name="select" onChange={this.onCheckChange(4)}/>
+                            {this.plainOptions[4]}</label>
+
+                        </div>
                         <button id="login-form-btn" onClick={ ()=>{
                             this.props.showLogin()}
                         }>Back to Login</button>
@@ -458,7 +462,7 @@
                              src={item.image_url}/>
                         <div>
                             <a className="item-name" href={item.url} target="_blank">{item.name}</a>
-                            /*<p>{item.keywords}</p>*/
+                            <p>{item.keywords}</p>
 
                         </div>
                         <p className="item-address" >{item.address}</p>

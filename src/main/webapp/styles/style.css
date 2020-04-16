@@ -163,7 +163,7 @@ a {
     color : #F9F9F9;
 }
 #register-form {
-    color: #624630;
+    color: #ffffff;
     margin: 0px auto;
     overflow: auto;
     padding: 40px;
@@ -182,11 +182,39 @@ a {
     width: 100%;
 }
 
+
+
+/*#interests{*/
+/*    float: left;*/
+/*    !*display: inline-block;*!*/
+/*    !*width: 20px;*!*/
+/*    color: #990000;*/
+/*}*/
+
+#register-form #interests label{
+    position: relative;
+    display: inline-block;
+    padding-left: 25px;
+    margin-bottom: 2px;
+    font-weight: 400;
+    vertical-align: middle;
+    cursor: pointer;
+}
+#register-form #interests label > input {
+    position: absolute;
+    margin-left: -20px;
+    /*display: inline-block;*/
+}
+
+
+
+
 #register-form #login-form-btn {
     cursor: pointer;
     float: left;
     padding: 8px 10px;
     text-align: left;
+    margin-top: 20px;
 }
 
 #register-form #register-btn {
@@ -194,6 +222,7 @@ a {
     float: right;
     padding: 8px 20px;
     text-align: right;
+    margin-top: 20px;
 }
 
 #register-result {
@@ -337,6 +366,7 @@ footer {
     font-size: 0.8em;
     height: 200px;
     position: relative;
+
 }
 
 footer p {

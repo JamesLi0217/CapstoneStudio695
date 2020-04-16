@@ -36,10 +36,11 @@ public class Register extends HttpServlet {
 		String password = input.getString("password");
 		String firstname = input.getString("first_name");
 		String lastname = input.getString("last_name");
+		String interest = input.getString("interest");
 
 		MySQLConnection connection = new MySQLConnection();
 		JSONObject obj = new JSONObject();
-		if (connection.addUser(userId, password, firstname, lastname)) {
+		if (connection.addUser(userId, password, firstname, lastname, interest)) {
 			obj.put("status", "OK");
 		} else {
 			obj.put("status", "User Already Exists");

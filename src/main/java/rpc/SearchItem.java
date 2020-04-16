@@ -47,11 +47,12 @@ public class SearchItem extends HttpServlet {
 //		System.out.print(1);
 		double lat = Double.parseDouble(request.getParameter("lat"));
 		double lon = Double.parseDouble(request.getParameter("lon"));
+		MySQLConnection connection = new MySQLConnection();
+		String interest = connection.getInteret(userId);
 
 		GitHubClient client = new GitHubClient();
-		List<Item> items = client.search(lat, lon, null);
+		List<Item> items = client.search(lat, lon, interest);
 
-		MySQLConnection connection = new MySQLConnection();
 		Set<String> favoritedItemIds = connection.getFavoriteItemIds(userId);
 		connection.close();
 
