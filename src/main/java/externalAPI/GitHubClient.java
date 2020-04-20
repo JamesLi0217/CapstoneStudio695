@@ -97,13 +97,13 @@ public class GitHubClient {
 		String[] descriptionArray = descriptionList.toArray(new String[descriptionList.size()]); // Convert list to an
 																									// array of the same
 																									// type.
-		List<List<String>> keywords = MonkeyLearnClient.extractKeywords(descriptionArray); // Call MonkeyLearn API.
-		for (int i = 0; i < keywords.size(); ++i) {
-			List<String> list = keywords.get(i);
-			// Why do we use HashSet but List here?
-			Set<String> set = new HashSet<String>(list);
-			itemList.get(i).setKeywords(set);
-		}
+//		List<List<String>> keywords = MonkeyLearnClient.extractKeywords(descriptionArray); // Call MonkeyLearn API.
+//		for (int i = 0; i < keywords.size(); ++i) {
+//			List<String> list = keywords.get(i);
+//			// Why do we use HashSet but List here?
+//			Set<String> set = new HashSet<String>(list);
+//			itemList.get(i).setKeywords(set);
+//		}
 
 		return itemList;
 	}

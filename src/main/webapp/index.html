@@ -147,10 +147,10 @@
 
                     return <div id="login-form">
                         <i className="fa fa-envelope-o fa-fw icon"></i>
-                        <input class = "input" type="text" placeholder="User Name" onChange={this.changeName}/>
+                        <input class = "input" type="text" placeholder="User Name" id = "loginUser" onChange={this.changeName}/>
 
                         <i className="fa fa-key fa-fw icon"></i>
-                        <input class = "input" type="password" placeholder="Password" onChange={this.changePassword}/>
+                        <input class = "input" type="password" placeholder="Password" id = "loginPassword" onChange={this.changePassword}/>
 
 
                         <button id="register-form-btn" onClick={ () => {
@@ -177,6 +177,9 @@
                     super();
                     this.state = {username : " ", password : " ", firstName : " ", lastName : " ", interest:"",}
                     this.plainOptions = ['Front End', 'Back End', 'Full stack', 'Android', 'IOS'];
+                    this.educationOptions = ['Postgraduate','Graduate', 'Undergraduate',  'High School'];
+                    this.experienceOptions = ['Fresh', '1-3 years', '3-5 years', '5+ years'];
+                    this.typeOptions = ['Full-time', 'Part-time', 'Intern'];
                     this.changeName = this.changeName.bind(this)
                     this.changePassword = this.changePassword.bind(this)
                     this.changeFirst = this.changeFirst.bind(this)
@@ -249,7 +252,7 @@
                         <label htmlFor="last-name" class = "label">Required *</label>
                         <input id="register-last-name" name="last-name" type="text" placeholder="Last Name" onChange={this.changeLast}/>
                         <label>Interests</label>
-                        <div id="interests">
+                        <div id="interests" className="questionnaire">
                             <label className="checkbox-inline"><input type="radio" name="select"  onChange={this.onCheckChange(0)}/>
                             {this.plainOptions[0]}</label>
                             <label className="checkbox-inline"><input type="radio" name="select" onChange={this.onCheckChange(1)}/>
@@ -261,6 +264,44 @@
                             {this.plainOptions[3]}</label>
                             <label className="checkbox-inline"><input type="radio" name="select" onChange={this.onCheckChange(4)}/>
                             {this.plainOptions[4]}</label>
+
+                        </div>
+
+                        <label>Education</label>
+                        <div id="education" className="questionnaire">
+                            <label className="checkbox-inline"><input type="radio" name="select2"  />
+                                {this.educationOptions[0]}</label>
+                            <label className="checkbox-inline"><input type="radio" name="select2" />
+                                {this.educationOptions[1]}</label>
+                            <label className="checkbox-inline"><input type="radio" name="select2" />
+                                {this.educationOptions[2]}</label>
+                            <br/>
+                            <label className="checkbox-inline"><input type="radio" name="select2" />
+                                {this.educationOptions[3]}</label>
+
+                        </div>
+
+                        <label>Experience</label>
+                        <div id="experience" className="questionnaire">
+                            <label className="checkbox-inline"><input type="radio" name="select3"  />
+                                {this.experienceOptions[0]}</label>
+                            <label className="checkbox-inline"><input type="radio" name="select3" />
+                                {this.experienceOptions[1]}</label>
+                            <label className="checkbox-inline"><input type="radio" name="select3" />
+                                {this.experienceOptions[2]}</label>
+                            <label className="checkbox-inline"><input type="radio" name="select3" />
+                                {this.experienceOptions[3]}</label>
+
+                        </div>
+
+                        <label>Job Type</label>
+                        <div id="jobType" className="questionnaire">
+                            <label className="checkbox-inline"><input type="radio" name="select4" />
+                                {this.typeOptions[0]}</label>
+                            <label className="checkbox-inline"><input type="radio" name="select4" />
+                                {this.typeOptions[1]}</label>
+                            <label className="checkbox-inline"><input type="radio" name="select4" />
+                                {this.typeOptions[2]}</label>
 
                         </div>
                         <button id="login-form-btn" onClick={ ()=>{
@@ -423,7 +464,7 @@
                     return <div>
                         <Navi filterFavo = {this.searchFavo} backToNearby = {this.search} recommend = {this.recommendation}/>
 
-                        <ItemList itemList = {this.state.itemList} changeFavoriteItem = {this.changeFavoriteItem}/>
+                        <ItemList id = "list_test" itemList = {this.state.itemList} changeFavoriteItem = {this.changeFavoriteItem}/>
                     </div>
                 };
 

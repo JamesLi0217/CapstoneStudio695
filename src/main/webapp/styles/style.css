@@ -191,7 +191,7 @@ a {
 /*    color: #990000;*/
 /*}*/
 
-#register-form #interests label{
+#register-form .questionnaire label{
     position: relative;
     display: inline-block;
     padding-left: 25px;
@@ -199,8 +199,9 @@ a {
     font-weight: 400;
     vertical-align: middle;
     cursor: pointer;
+    font-size: 12px;
 }
-#register-form #interests label > input {
+#register-form .questionnaire label > input {
     position: absolute;
     margin-left: -20px;
     /*display: inline-block;*/
