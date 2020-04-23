@@ -53,13 +53,13 @@ public class SearchItem extends HttpServlet {
 		GitHubClient client = new GitHubClient();
 		List<Item> items = client.search(lat, lon, interest);
 
-//		Set<String> favoritedItemIds = connection.getFavoriteItemIds(userId);
+		Set<String> favoritedItemIds = connection.getFavoriteItemIds(userId);
 		connection.close();
 
 		JSONArray array = new JSONArray();
 		for (Item item : items) {
 			JSONObject obj = item.toJSONObject();
-//			obj.put("favorite", favoritedItemIds.contains(item.getItemId()));
+			obj.put("favorite", favoritedItemIds.contains(item.getItemId()));
 			array.put(obj);
 		}
 		RpcHelper.writeJsonArray(response, array);

@@ -25,7 +25,7 @@
 <!--        <a href="#">About</a>-->
     </nav>
     <span id="welcome-msg"></span>
-    <a href="logout">Logout</a>
+    <a href="logout" id = "logout">Logout</a>
     <i id="avatar" class="avatar fa fa-user fa-2x"></i>
 </header>
 
@@ -105,7 +105,9 @@
                     // const password = md5(this.state.username + md5(this.state.password));
 
                     // The request parameters
-                    const url = 'http://localhost:8080/Jobs/login'
+                    // const url = 'http://localhost:8080/Jobs/login'
+                    const ip = "http://localhost:8080";
+                    const url = `${ip}/Jobs/login`;
                     const req = JSON.stringify({
                         // user_id: "James123",
                         // password: "fcfc6c840c4a2eaef0e385f5282e349e"
@@ -190,25 +192,32 @@
                 register(){
 
                     const url = 'http://localhost:8080/Jobs/register'
-                    const req = JSON.stringify({
-                        user_id : this.state.username,
-                        password : this.state.password,
-                        first_name: this.state.firstName,
-                        last_name: this.state.lastName,
-                        interest: this.state.interest,
-                    })
+                    if (this.state.password == " "){
+                        alert("proper password");
+                    } else {
+                        const req = JSON.stringify({
+                            user_id : this.state.username,
+                            password : this.state.password,
+                            first_name: this.state.firstName,
+                            last_name: this.state.lastName,
+                            interest: this.state.interest,
+                        })
 
-                    fetch(url, {
-                        method: "POST",
-                        headers: {'Content-Type': 'application/json'},
-                        body: req
-                    }).then(response => response.json())
-                        .then(data => {
-                            console.log(data)
-                            if (data.status === "OK"){
-                                alert("Successfully Register! Enjoy")
-                            }
-                        }).catch(error => console.error(error));
+                        fetch(url, {
+                            method: "POST",
+                            headers: {'Content-Type': 'application/json'},
+                            body: req
+                        }).then(response => response.json())
+                            .then(data => {
+                                console.log(data)
+                                if (data.status === "OK"){
+                                    alert("Successfully Register! Enjoy")
+                                } else {
+                                    alert("Enter a unique User Name")
+                                }
+                            }).catch(error => console.error(error));
+                    }
+
                 }
 
                 changeName(event){
@@ -218,9 +227,16 @@
                 }
 
                 changePassword(event){
-                    this.setState({
-                        password:event.target.value
-                    })
+                    const password = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/
+                    if (event.target.value.match(password)){
+                        this.setState({
+                            password:event.target.value
+                        })
+                    }
+                    // else {
+                    //     alert("6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter");
+                    // }
+
                 }
 
                 changeFirst(event){
@@ -239,6 +255,31 @@
                     this.state.interest == "" ? this.state.interest = this.plainOptions[num] : ""
                 }
 
+                // checkPasswordSame(){
+                //     password1 = form.password1.value;
+                //     password2 = form.password2.value;
+                //
+                //     // If password not entered
+                //     if (password1 == '')
+                //         alert ("Please enter Password");
+                //
+                //     // If confirm password not entered
+                //     else if (password2 == '')
+                //         alert ("Please enter confirm password");
+                //
+                //     // If Not same return False.
+                //     else if (password1 != password2) {
+                //         alert ("\nPassword did not match: Please try again...")
+                //         return false;
+                //     }
+                //     //
+                //     // // If same return True.
+                //     // else{
+                //     //     alert("Welcome to Jobs!")
+                //     //     return true;
+                //     // }
+                // }
+
 
                 render(){
 
@@ -246,6 +287,7 @@
                         <label htmlFor="username" class = "label">Required*</label>
                         <input id="register-username" name="username" type="text" placeholder="UserName" onChange={this.changeName}/>
                         <label htmlFor="password" class = "label">Required *</label>
+                        <p>6 ~ 20 characters: at least one digit, one uppercase and one lowercase letter</p>
                         <input id="register-password" name="password" type="password" placeholder="Password" onChange={this.changePassword}/>
                         <label htmlFor="first-name" class = "label">Required *</label>
                         <input id="register-first-name" name="first-name" type="text" placeholder="First Name" onChange={this.changeFirst}/>
@@ -336,16 +378,6 @@
                     // this.getFavorite()
                 }
 
-                // position(){
-                //      navigator.geolocation.getCurrentPosition(
-                //         position => this.setState({
-                //             latitude: position.coords.latitude,
-                //             longitude: position.coords.longitude
-                //         }),
-                //         err => console.log(err)
-                //     );
-                //     console.log(this.state.latitude)
-                // }
                 search(){
                     if (navigator.geolocation) {
                         navigator.geolocation.getCurrentPosition(
@@ -498,7 +530,7 @@
 
                     const item = this.props.content
 
-                    return <div class="item">
+                    return <div class="item" onClick={() => {this.props.func(item)}}>
                         <img alt="item image"
                              src={item.image_url}/>
                         <div>
@@ -508,8 +540,8 @@
                         </div>
                         <p className="item-address" >{item.address}</p>
 
-                        <div className="fav-link">
-                            <i className={item.favorite ?  "fas fa-bookmark" :  "far fa-bookmark"} aria-hidden="true" onClick={() => {this.props.func(item)}}></i>
+                        <div className="fav-link" >
+                            <i className={item.favorite ?  "fas fa-bookmark" :  "far fa-bookmark"} aria-hidden="true" ></i>
                         </div>
                     </div>
 
