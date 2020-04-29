@@ -22,7 +22,9 @@ public class Test {
 	}
 	
 	public void loginTest(){
-		driver.get("http://localhost:8080/Jobs/");
+		String url = String.format("%s", "http://localhost:8080/Jobs/");
+//		String url = "%s/Jobs","http://localhost:";
+		driver.get(url);
 		boolean testBefore = driver.getPageSource().contains("Welcome, Toms11");
 		driver.findElement(By.id("loginUser")).sendKeys("Toms11");
 		driver.findElement(By.id("loginPassword")).sendKeys("111");
@@ -79,7 +81,7 @@ public class Test {
 			String temp = cur.getAttribute("class");
 			if (temp.equals("fas fa-bookmark") ){
 				item.click();
-				Thread.sleep(500);
+//				Thread.sleep(500);
 				targetUrl = item.findElement(By.className("item-name")).getAttribute("href");
 				break;
 			}
@@ -163,11 +165,11 @@ public class Test {
 		String expectedJob = element.getText();
 		element.sendKeys(Keys.ENTER);
 		Thread.sleep(3000);
-		driver.close();
+//		driver.close();
 		new WebDriverWait(driver,10);
 		ArrayList<String> tabs = new ArrayList<String> (driver.getWindowHandles());
-		driver.switchTo().window(tabs.get(0));
-		new WebDriverWait(driver,10).until(ExpectedConditions.visibilityOfElementLocated(By.id("page")));
+		driver.switchTo().window(tabs.get(1));
+		new WebDriverWait(driver,10).until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("h1")));
 		String actualJob = driver.findElement(By.cssSelector("h1")).getText();
 		driver.close();
 		Assert.assertEquals(expectedJob, actualJob);
@@ -176,6 +178,8 @@ public class Test {
 	
 	
 	public void jobDetailTest() {
+		ArrayList<String> tabs = new ArrayList<String> (driver.getWindowHandles());
+		driver.switchTo().window(tabs.get(0));
 		new WebDriverWait(driver,60).until(ExpectedConditions.visibilityOfElementLocated(By.className("item-name")));
 		String jobName = driver.findElement(By.className("item-name")).getText().toString();
 //		driver.close();
@@ -183,6 +187,8 @@ public class Test {
 	}
 	
 	public void logoutBtnTest() {
+		ArrayList<String> tabs = new ArrayList<String> (driver.getWindowHandles());
+		driver.switchTo().window(tabs.get(0));
 		
 		new WebDriverWait(driver,60).until(ExpectedConditions.visibilityOfElementLocated(By.id("item-nav")));
 		
@@ -224,7 +230,8 @@ public class Test {
 		System.out.println("Test Recommendation Navigation Ok");
 		
 		
-//		tester.jobExtLinkTest();
+		tester.jobExtLinkTest();
+		System.out.println("Test External Application Ok");
 		tester.logoutBtnTest();
 		System.out.println("Test Logout Navigation Ok");
 		driver.close();

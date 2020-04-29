@@ -14,7 +14,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.21.1/babel.min.js"></script>
     <script src="https://kit.fontawesome.com/587a770a22.js" crossorigin="anonymous"></script>
 
-<!--    <script type = "module" src="md5.js"></script>-->
+    <!--    <script type = "module" src="md5.js"></script>-->
 
 </head>
 <body>
@@ -22,10 +22,10 @@
     <nav class="top-nav">
         <a href="#">Home</a>
         <a href="#contacts">Contact</a>
-<!--        <a href="#">About</a>-->
+        <!--        <a href="#">About</a>-->
     </nav>
     <span id="welcome-msg"></span>
-    <a href="logout" id = "logout">Logout</a>
+    <a href="logout" id="logout">Logout</a>
     <i id="avatar" class="avatar fa fa-user fa-2x"></i>
 </header>
 
@@ -33,7 +33,7 @@
     <webTitle>
         <p>
             <span>Job</span>
-            <br /> Recommendation
+            <br/> Recommendation
         </p>
     </webTitle>
 
@@ -46,45 +46,41 @@
                 constructor() {
                     super();
                     this.state = {
-                        showLogin : true,
-                        showRegister : false,
-                        showMain : false,
-                        // showQuestionnaire : false,
-                        username : " "
+                        showLogin: true,
+                        showRegister: false,
+                        showMain: false,
+                        username: " "
                     }
-
 
                     this.showLogin = this.showLogin.bind(this)
                     this.showRegister = this.showRegister.bind(this)
                     this.showMain = this.showMain.bind(this)
                     this.validUsername = this.validUsername.bind(this)
-                    // this.showQuestionnare = this.showQuestionnare.bind(this)
-                }
-                // showQuestionnaire(){
-                //     this.setState({showLogin : false, showRegister : false, showMain : false})
-                // }
-
-                showMain(){
-                    this.setState({showLogin : false, showRegister : false, showMain : true})
                 }
 
-                showRegister(){
-                    this.setState({showRegister : true, showLogin : false, showMain : false})
+                showMain() {
+                    this.setState({showLogin: false, showRegister: false, showMain: true})
                 }
 
-                showLogin(){
-                    this.setState({showLogin : true, showRegister : false, showMain : false})
+                showRegister() {
+                    this.setState({showRegister: true, showLogin: false, showMain: false})
                 }
 
-                validUsername(username){
-                    this.setState({username : username})
+                showLogin() {
+                    this.setState({showLogin: true, showRegister: false, showMain: false})
                 }
-                render(){
+
+                validUsername(username) {
+                    this.setState({username: username})
+                }
+
+                render() {
                     return <div>
-                        {this.state.showLogin ?  <Login username = {this.validUsername} showMain = {this.showMain}  showRegister = {this.showRegister}/>: null}
-                        {this.state.showRegister ? <Register showLogin = {this.showLogin}/> : null}
-                        {this.state.showMain ? <Main username = {this.state.username}/> : null}
-                        </div>
+                        {this.state.showLogin ? <Login username={this.validUsername} showMain={this.showMain}
+                                                       showRegister={this.showRegister}/> : null}
+                        {this.state.showRegister ? <Register showLogin={this.showLogin}/> : null}
+                        {this.state.showMain ? <Main username={this.state.username}/> : null}
+                    </div>
                 };
             }
 
@@ -92,7 +88,7 @@
             class Login extends React.Component {
                 constructor() {
                     super();
-                    this.state = {username : " ", password: " ", valid : false}
+                    this.state = {username: " ", password: " ", valid: false}
                     // this.userName = React.createRef()
                     // this.passWord = React.createRef()
                     this.changeName = this.changeName.bind(this)
@@ -102,11 +98,8 @@
                 }
 
                 login() {
-                    // const password = md5(this.state.username + md5(this.state.password));
-
-                    // The request parameters
                     // const url = 'http://localhost:8080/Jobs/login'
-                    const ip = "http://localhost:8080";
+                    const ip = "http://13.58.132.177:8080";
                     const url = `${ip}/Jobs/login`;
                     const req = JSON.stringify({
                         // user_id: "James123",
@@ -133,38 +126,36 @@
 
                 }
 
-                changeName(event){
-                    this.setState({username:event.target.value, password:this.state.password})
-                }
-                changePassword(event){
-                    this.setState({password:event.target.value,username:this.state.username})
+                changeName(event) {
+                    this.setState({username: event.target.value, password: this.state.password})
                 }
 
-                showMessage(){
+                changePassword(event) {
+                    this.setState({password: event.target.value, username: this.state.username})
+                }
+
+                showMessage() {
                     document.getElementById("welcome-msg").innerHTML = "Welcome, " + this.state.username
                 }
 
-                render(){
-
+                render() {
 
                     return <div id="login-form">
                         <i className="fa fa-envelope-o fa-fw icon"></i>
-                        <input class = "input" type="text" placeholder="User Name" id = "loginUser" onChange={this.changeName}/>
+                        <input class="input" type="text" placeholder="User Name" id="loginUser"
+                               onChange={this.changeName}/>
 
                         <i className="fa fa-key fa-fw icon"></i>
-                        <input class = "input" type="password" placeholder="Password" id = "loginPassword" onChange={this.changePassword}/>
-
-
-                        <button id="register-form-btn" onClick={ () => {
+                        <input class="input" type="password" placeholder="Password" id="loginPassword"
+                               onChange={this.changePassword}/>
+                        <button id="register-form-btn" onClick={() => {
                             this.props.showRegister()
-                            // this.setState({showRegister : !this.state.showRegister})
-                        }}>New User? Register</button>
+                        }}>New User? Register
+                        </button>
                         <button id="login-btn" onClick={() => {
                             this.login();
-                            // if (this.state.valid){
-                            //     this.props.showMain()
-                            // }
-                        }}>Login</button>
+                        }}>Login
+                        </button>
                         {this.state.valid ? this.props.username(this.state.username) : null}
                         {this.state.valid ? this.props.showMain() : null}
                         {this.state.valid ? this.showMessage() : null}
@@ -177,9 +168,9 @@
 
                 constructor() {
                     super();
-                    this.state = {username : " ", password : " ", firstName : " ", lastName : " ", interest:"",}
+                    this.state = {username: " ", password: " ", firstName: " ", lastName: " ", interest: ""}
                     this.plainOptions = ['Front End', 'Back End', 'Full stack', 'Android', 'IOS'];
-                    this.educationOptions = ['Postgraduate','Graduate', 'Undergraduate',  'High School'];
+                    this.educationOptions = ['Postgraduate', 'Graduate', 'Undergraduate', 'High School'];
                     this.experienceOptions = ['Fresh', '1-3 years', '3-5 years', '5+ years'];
                     this.typeOptions = ['Full-time', 'Part-time', 'Intern'];
                     this.changeName = this.changeName.bind(this)
@@ -189,18 +180,20 @@
                     this.register = this.register.bind(this)
                 }
 
-                register(){
+                register() {
 
-                    const url = 'http://localhost:8080/Jobs/register'
-                    if (this.state.password == " "){
+                    const ip = "http://13.58.132.177:8080";
+                    const url = `${ip}/Jobs/register`;
+                    // const url = 'http://localhost:8080/Jobs/register'
+                    if (this.state.password == " ") {
                         alert("proper password");
                     } else {
                         const req = JSON.stringify({
-                            user_id : this.state.username,
-                            password : this.state.password,
+                            user_id: this.state.username,
+                            password: this.state.password,
                             first_name: this.state.firstName,
                             last_name: this.state.lastName,
-                            interest: this.state.interest,
+                            interest: this.state.interest
                         })
 
                         fetch(url, {
@@ -210,7 +203,7 @@
                         }).then(response => response.json())
                             .then(data => {
                                 console.log(data)
-                                if (data.status === "OK"){
+                                if (data.status === "OK") {
                                     alert("Successfully Register! Enjoy")
                                 } else {
                                     alert("Enter a unique User Name")
@@ -220,17 +213,17 @@
 
                 }
 
-                changeName(event){
+                changeName(event) {
                     this.setState({
-                        username:event.target.value
+                        username: event.target.value
                     })
                 }
 
-                changePassword(event){
+                changePassword(event) {
                     const password = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/
-                    if (event.target.value.match(password)){
+                    if (event.target.value.match(password)) {
                         this.setState({
-                            password:event.target.value
+                            password: event.target.value
                         })
                     }
                     // else {
@@ -239,119 +232,106 @@
 
                 }
 
-                changeFirst(event){
+                changeFirst(event) {
                     this.setState({
-                        firstName:event.target.value
+                        firstName: event.target.value
                     })
                 }
 
-                changeLast(event){
+                changeLast(event) {
                     this.setState({
-                        lastName:event.target.value
+                        lastName: event.target.value
                     })
                 }
 
-                onCheckChange(num){
+                onCheckChange(num) {
                     this.state.interest == "" ? this.state.interest = this.plainOptions[num] : ""
                 }
 
-                // checkPasswordSame(){
-                //     password1 = form.password1.value;
-                //     password2 = form.password2.value;
-                //
-                //     // If password not entered
-                //     if (password1 == '')
-                //         alert ("Please enter Password");
-                //
-                //     // If confirm password not entered
-                //     else if (password2 == '')
-                //         alert ("Please enter confirm password");
-                //
-                //     // If Not same return False.
-                //     else if (password1 != password2) {
-                //         alert ("\nPassword did not match: Please try again...")
-                //         return false;
-                //     }
-                //     //
-                //     // // If same return True.
-                //     // else{
-                //     //     alert("Welcome to Jobs!")
-                //     //     return true;
-                //     // }
-                // }
 
-
-                render(){
+                render() {
 
                     return <div id="register-form">
-                        <label htmlFor="username" class = "label">Required*</label>
-                        <input id="register-username" name="username" type="text" placeholder="UserName" onChange={this.changeName}/>
-                        <label htmlFor="password" class = "label">Required *</label>
+                        <label htmlFor="username" class="label">Required*</label>
+                        <input id="register-username" name="username" type="text" placeholder="UserName"
+                               onChange={this.changeName}/>
+                        <label htmlFor="password" class="label">Required *</label>
                         <p>6 ~ 20 characters: at least one digit, one uppercase and one lowercase letter</p>
-                        <input id="register-password" name="password" type="password" placeholder="Password" onChange={this.changePassword}/>
-                        <label htmlFor="first-name" class = "label">Required *</label>
-                        <input id="register-first-name" name="first-name" type="text" placeholder="First Name" onChange={this.changeFirst}/>
-                        <label htmlFor="last-name" class = "label">Required *</label>
-                        <input id="register-last-name" name="last-name" type="text" placeholder="Last Name" onChange={this.changeLast}/>
+                        <input id="register-password" name="password" type="password" placeholder="Password"
+                               onChange={this.changePassword}/>
+                        <label htmlFor="first-name" class="label">Required *</label>
+                        <input id="register-first-name" name="first-name" type="text" placeholder="First Name"
+                               onChange={this.changeFirst}/>
+                        <label htmlFor="last-name" class="label">Required *</label>
+                        <input id="register-last-name" name="last-name" type="text" placeholder="Last Name"
+                               onChange={this.changeLast}/>
                         <label>Interests</label>
                         <div id="interests" className="questionnaire">
-                            <label className="checkbox-inline"><input type="radio" name="select"  onChange={this.onCheckChange(0)}/>
-                            {this.plainOptions[0]}</label>
-                            <label className="checkbox-inline"><input type="radio" name="select" onChange={this.onCheckChange(1)}/>
-                            {this.plainOptions[1]}</label>
-                            <label className="checkbox-inline"><input type="radio" name="select" onChange={this.onCheckChange(2)}/>
-                            {this.plainOptions[2]}</label>
+                            <label className="checkbox-inline"><input type="radio" name="select"
+                                                                      onChange={this.onCheckChange(0)}/>
+                                {this.plainOptions[0]}</label>
+                            <label className="checkbox-inline"><input type="radio" name="select"
+                                                                      onChange={this.onCheckChange(1)}/>
+                                {this.plainOptions[1]}</label>
+                            <label className="checkbox-inline"><input type="radio" name="select"
+                                                                      onChange={this.onCheckChange(2)}/>
+                                {this.plainOptions[2]}</label>
                             <br/>
-                            <label className="checkbox-inline"><input type="radio" name="select" onChange={this.onCheckChange(3)}/>
-                            {this.plainOptions[3]}</label>
-                            <label className="checkbox-inline"><input type="radio" name="select" onChange={this.onCheckChange(4)}/>
-                            {this.plainOptions[4]}</label>
+                            <label className="checkbox-inline"><input type="radio" name="select"
+                                                                      onChange={this.onCheckChange(3)}/>
+                                {this.plainOptions[3]}</label>
+                            <label className="checkbox-inline"><input type="radio" name="select"
+                                                                      onChange={this.onCheckChange(4)}/>
+                                {this.plainOptions[4]}</label>
 
                         </div>
 
                         <label>Education</label>
                         <div id="education" className="questionnaire">
-                            <label className="checkbox-inline"><input type="radio" name="select2"  />
+                            <label className="checkbox-inline"><input type="radio" name="select2"/>
                                 {this.educationOptions[0]}</label>
-                            <label className="checkbox-inline"><input type="radio" name="select2" />
+                            <label className="checkbox-inline"><input type="radio" name="select2"/>
                                 {this.educationOptions[1]}</label>
-                            <label className="checkbox-inline"><input type="radio" name="select2" />
+                            <label className="checkbox-inline"><input type="radio" name="select2"/>
                                 {this.educationOptions[2]}</label>
                             <br/>
-                            <label className="checkbox-inline"><input type="radio" name="select2" />
+                            <label className="checkbox-inline"><input type="radio" name="select2"/>
                                 {this.educationOptions[3]}</label>
 
                         </div>
 
                         <label>Experience</label>
                         <div id="experience" className="questionnaire">
-                            <label className="checkbox-inline"><input type="radio" name="select3"  />
+                            <label className="checkbox-inline"><input type="radio" name="select3"/>
                                 {this.experienceOptions[0]}</label>
-                            <label className="checkbox-inline"><input type="radio" name="select3" />
+                            <label className="checkbox-inline"><input type="radio" name="select3"/>
                                 {this.experienceOptions[1]}</label>
-                            <label className="checkbox-inline"><input type="radio" name="select3" />
+                            <label className="checkbox-inline"><input type="radio" name="select3"/>
                                 {this.experienceOptions[2]}</label>
-                            <label className="checkbox-inline"><input type="radio" name="select3" />
+                            <label className="checkbox-inline"><input type="radio" name="select3"/>
                                 {this.experienceOptions[3]}</label>
 
                         </div>
 
                         <label>Job Type</label>
                         <div id="jobType" className="questionnaire">
-                            <label className="checkbox-inline"><input type="radio" name="select4" />
+                            <label className="checkbox-inline"><input type="radio" name="select4"/>
                                 {this.typeOptions[0]}</label>
-                            <label className="checkbox-inline"><input type="radio" name="select4" />
+                            <label className="checkbox-inline"><input type="radio" name="select4"/>
                                 {this.typeOptions[1]}</label>
-                            <label className="checkbox-inline"><input type="radio" name="select4" />
+                            <label className="checkbox-inline"><input type="radio" name="select4"/>
                                 {this.typeOptions[2]}</label>
 
                         </div>
-                        <button id="login-form-btn" onClick={ ()=>{
-                            this.props.showLogin()}
-                        }>Back to Login</button>
-                        <button id="register-btn" onClick={ ()=>{
+                        <button id="login-form-btn" onClick={() => {
+                            this.props.showLogin()
+                        }
+                        }>Back to Login
+                        </button>
+                        <button id="register-btn" onClick={() => {
                             this.register()
-                        }}>Register</button>
+                        }}>Register
+                        </button>
                         <p id="register-result"></p>
                     </div>
 
@@ -362,7 +342,7 @@
             class Main extends React.Component {
                 constructor() {
                     super();
-                    this.state = {itemList : [], searched : false, faved: false}
+                    this.state = {itemList: [], searched: false, faved: false}
                     this.changeFavoriteItem = this.changeFavoriteItem.bind(this)
                     this.getFavorite = this.getFavorite.bind(this)
                     this.search = this.search.bind(this)
@@ -373,31 +353,28 @@
                     this.searchHelper = this.searchHelper.bind(this)
                 }
 
-                componentDidMount(){
+                componentDidMount() {
                     this.search()
-                    // this.getFavorite()
                 }
-
-                search(){
+                search() {
                     if (navigator.geolocation) {
                         navigator.geolocation.getCurrentPosition(
                             this.onPositionUpdated,
                             this.onLoadPositionFailed, {
-                                maximumAge : 60000
+                                maximumAge: 60000
                             }
                         )
                         // console.log(1)
-                        } else {
+                    } else {
                         this.onLoadPositionFailed()
                     }
                 }
-                onPositionUpdated(position){
+                onPositionUpdated(position) {
                     const lat = position.coords.latitude;
                     const lon = position.coords.longitude;
                     this.searchHelper(lat, lon)
                 }
-
-                onLoadPositionFailed(){
+                onLoadPositionFailed() {
                     const url = 'http://ipinfo.io/json'
                     let lat = "40.76116943359375";
                     let lon = "-73.95081329345703";
@@ -416,37 +393,44 @@
                         .catch(console.log)
                     this.searchHelper(lat, lon)
                 }
+                searchHelper(lat, lon) {
+                    const ip = "http://13.58.132.177:8080";
+                    const url = `${ip}/Jobs/search?lat=`;
 
-                searchHelper(lat, lon){
-                    fetch('http://localhost:8080/Jobs/search?lat='+lat + "&lon=" + lon )
+                    fetch(url + lat + "&lon=" + lon)
                         .then(res => res.json())
                         .then((data) => {
                             //****** callback function help getFavorite can get new state
-                            this.setState({ itemList: data }, () => this.getFavorite())
+                            this.setState({itemList: data}, () => this.getFavorite())
                         })
                         .catch(console.log)
                 }
-
-                getFavorite(){
-                    const url = 'http://localhost:8080/Jobs/history?user_id=' + this.props.username
+                getFavorite() {
+                    const ip = "http://13.58.132.177:8080";
+                    const url = `${ip}/Jobs/history?user_id=` + this.props.username
                     fetch(url, {
                         method: "GET"
                     }).then(response => response.json())
                         .then(data => {
                             console.log(data)
 
-                            for(const item in data){
-                                this.setState({itemList : this.state.itemList.map(job => job.item_id === data[item].item_id ? {...job, favorite : true} : job)})
+                            for (const item in data) {
+                                this.setState({
+                                    itemList: this.state.itemList.map(job => job.item_id === data[item].item_id ? {
+                                        ...job,
+                                        favorite: true
+                                    } : job)
+                                })
                             }
                         }).catch(error => console.error(error));
                 }
-
                 changeFavoriteItem(item) {
 
-                    const url = 'http://localhost:8080/Jobs/history'
+                    const ip = "http://localhost:8080";
+                    const url = `${ip}/Jobs/history`;
                     const req = JSON.stringify({
-                        user_id : this.props.username,
-                        favorite : item
+                        user_id: this.props.username,
+                        favorite: item
                     })
 
                     // check whether this item has been visited or not
@@ -462,60 +446,61 @@
                     }).then(response => response.json())
                         .then(data => {
                             console.log(data)
-                            this.setState({itemList : this.state.itemList.map(
-                                job => job.item_id === item.item_id ? {...job, favorite : !job.favorite} : job)})
+                            this.setState({
+                                itemList: this.state.itemList.map(
+                                    job => job.item_id === item.item_id ? {...job, favorite: !job.favorite} : job)
+                            })
                             // consloe.log(job)
                         }).catch(error => console.error(error));
                 }
-
-                searchFavo(){
-                    // this.setState({itemList : this.state.itemList.filter(job => job.favorite === true)})
-                    const url = "http://localhost:8080/Jobs/history?user_id=" + this.props.username
+                searchFavo() {
+                    const ip = "http://13.58.132.177:8080";
+                    const url = `${ip}/Jobs/history` + "?user_id=" + this.props.username
                     fetch(url)
                         .then(res => res.json())
                         .then((data) => {
-                            this.setState({ itemList: data })
+                            this.setState({itemList: data})
                         })
                         .catch(console.log)
 
                 }
 
-                recommendation(){
-                    const url = "http://localhost:8080/Jobs/recommendation?user_id="+ this.props.username +"&lat=40.724198&lon=-74.036368"
+                recommendation() {
+                    const ip = "http://localhost:8080";
+                    const url = `${ip}/Jobs/recommendation` + "?user_id=" + this.props.username + "&lat=40.724198&lon=-74.036368"
                     fetch(url)
                         .then(res => res.json())
                         .then((data) => {
-                            this.setState({ itemList: data })
+                            this.setState({itemList: data})
                         })
                         .catch(console.log)
 
                 }
 
-
-                render(){
+                render() {
                     return <div>
-                        <Navi filterFavo = {this.searchFavo} backToNearby = {this.search} recommend = {this.recommendation}/>
+                        <Navi filterFavo={this.searchFavo} backToNearby={this.search} recommend={this.recommendation}/>
 
-                        <ItemList id = "list_test" itemList = {this.state.itemList} changeFavoriteItem = {this.changeFavoriteItem}/>
+                        <ItemList id="list_test" itemList={this.state.itemList}
+                                  changeFavoriteItem={this.changeFavoriteItem}/>
                     </div>
                 };
-
             }
-
 
 
             class ItemList extends React.Component {
                 constructor() {
                     super();
                 }
-                render(){
+
+                render() {
 
                     return <ul id="item-list">
 
                         {this.props.itemList.map(item => {
-                            return <Item key = {item.item_id} content = {item} func = {this.props.changeFavoriteItem} />
+                            return <Item key={item.item_id} content={item} func={this.props.changeFavoriteItem}/>
                         })
-                    }
+                        }
                     </ul>
 
                 };
@@ -526,11 +511,13 @@
                     super();
                 }
 
-                render(){
+                render() {
 
                     const item = this.props.content
 
-                    return <div class="item" onClick={() => {this.props.func(item)}}>
+                    return <div class="item" onClick={() => {
+                        this.props.func(item)
+                    }}>
                         <img alt="item image"
                              src={item.image_url}/>
                         <div>
@@ -538,10 +525,10 @@
                             <p>{item.keywords}</p>
 
                         </div>
-                        <p className="item-address" >{item.address}</p>
+                        <p className="item-address">{item.address}</p>
 
-                        <div className="fav-link" >
-                            <i className={item.favorite ?  "fas fa-bookmark" :  "far fa-bookmark"} aria-hidden="true" ></i>
+                        <div className="fav-link">
+                            <i className={item.favorite ? "fas fa-bookmark" : "far fa-bookmark"} aria-hidden="true"></i>
                         </div>
                     </div>
 
@@ -553,30 +540,41 @@
                     super();
                     this.changeActive = this.changeActive.bind(this)
                 }
-                changeActive(id){
+
+                changeActive(id) {
                     const btnClass = document.getElementsByClassName("main-nav-btn")
                     console.log(btnClass)
-                    for (const i in btnClass){
-                        if (btnClass[i].id === id){
+                    for (const i in btnClass) {
+                        if (btnClass[i].id === id) {
                             btnClass[i].className = "main-nav-btn active"
                         } else {
                             btnClass[i].className = "main-nav-btn"
                         }
                     }
                 }
-                render(){
+
+                render() {
                     return <aside id="item-nav">
                         <div className="nav-icon">
                             <i className="fa fa-sitemap fa-2x"></i>
                         </div>
                         <nav className="main-nav">
-                            <a href="#" id="nearby-btn" className="main-nav-btn active" onClick={(event) => {this.props.backToNearby(); this.changeActive("nearby-btn")}}>
+                            <a href="#" id="nearby-btn" className="main-nav-btn active" onClick={(event) => {
+                                this.props.backToNearby();
+                                this.changeActive("nearby-btn")
+                            }}>
                                 <i className="fa fa-map-marker"></i> Nearby
                             </a>
-                            <a href="#" id="fav-btn" className="main-nav-btn" onClick={(event) => {this.props.filterFavo(); this.changeActive("fav-btn")}}>
+                            <a href="#" id="fav-btn" className="main-nav-btn" onClick={(event) => {
+                                this.props.filterFavo();
+                                this.changeActive("fav-btn")
+                            }}>
                                 <i className="fas fa-bookmark"></i> My Favorites
                             </a>
-                            <a href="#" id="recommend-btn" className="main-nav-btn" onClick={(event) =>{this.props.recommend(); this.changeActive("recommend-btn")}}>
+                            <a href="#" id="recommend-btn" className="main-nav-btn" onClick={(event) => {
+                                this.props.recommend();
+                                this.changeActive("recommend-btn")
+                            }}>
                                 <i className="fa fa-thumbs-up"></i> Recommendation
                             </a>
                         </nav>
@@ -602,13 +600,13 @@
         <li>
             <p><i class="fa fa-map-o fa-2x"></i></p>
             <br/>
-            <p >1 Castle Point Terrace</p>
+            <p>1 Castle Point Terrace</p>
             <p>Hoboken <br/> NJ 07030</p>
         </li>
     </ul>
 
-<!--    <p class="title">Who We Are</p>-->
-<!--    <p>"Jobs from SSW695"</p>-->
+    <!--    <p class="title">Who We Are</p>-->
+    <!--    <p>"Jobs from SSW695"</p>-->
 </footer>
 </body>
 </html>
