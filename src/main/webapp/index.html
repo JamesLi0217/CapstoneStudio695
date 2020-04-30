@@ -100,7 +100,7 @@
 
                 login() {
                     // const url = 'http://localhost:8080/Jobs/login'
-                    const ip = "http://13.58.132.177:8080";
+                    const ip = "http://13.58.132.177";
                     const url = `${ip}/Jobs/login`;
                     const req = JSON.stringify({
                         // user_id: "James123",
@@ -183,7 +183,7 @@
 
                 register() {
 
-                    const ip = "http://13.58.132.177:8080";
+                    const ip = "http://13.58.132.177";
                     const url = `${ip}/Jobs/register`;
                     // const url = 'http://localhost:8080/Jobs/register'
                     if (this.state.password == " ") {
@@ -395,7 +395,7 @@
                     this.searchHelper(lat, lon)
                 }
                 searchHelper(lat, lon) {
-                    const ip = "http://13.58.132.177:8080";
+                    const ip = "http://13.58.132.177";
                     const url = `${ip}/Jobs/search?lat=`;
 
                     fetch(url + lat + "&lon=" + lon)
@@ -407,7 +407,7 @@
                         .catch(console.log)
                 }
                 getFavorite() {
-                    const ip = "http://13.58.132.177:8080";
+                    const ip = "http://13.58.132.177";
                     const url = `${ip}/Jobs/history?user_id=` + this.props.username
                     fetch(url, {
                         method: "GET"
@@ -427,7 +427,7 @@
                 }
                 changeFavoriteItem(item) {
 
-                    const ip = "http://localhost:8080";
+                    const ip = "http://13.58.132.177";
                     const url = `${ip}/Jobs/history`;
                     const req = JSON.stringify({
                         user_id: this.props.username,
@@ -455,7 +455,7 @@
                         }).catch(error => console.error(error));
                 }
                 searchFavo() {
-                    const ip = "http://13.58.132.177:8080";
+                    const ip = "http://13.58.132.177";
                     const url = `${ip}/Jobs/history` + "?user_id=" + this.props.username
                     fetch(url)
                         .then(res => res.json())
@@ -467,7 +467,7 @@
                 }
 
                 recommendation() {
-                    const ip = "http://localhost:8080";
+                    const ip = "http://13.58.132.177";
                     const url = `${ip}/Jobs/recommendation` + "?user_id=" + this.props.username + "&lat=40.724198&lon=-74.036368"
                     fetch(url)
                         .then(res => res.json())
